@@ -1,0 +1,26 @@
+{
+  "name": "threegame",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "webpack",
+    "dev": "webpack serve"
+  },
+  "devDependencies": {
+    "css-loader": "^6.7.3",
+    "sass-loader": "^13.2.1",
+    "style-loader": "^3.3.2",
+    "webpack": "^5.76.2",
+    "webpack-cli": "^5.0.1",
+    "webpack-dev-server": "^4.13.1"
+  },
+  "dependencies": {
+    "@babel/preset-env": "^7.20.2",
+    "babel-loader": "^9.1.2",
+    "gsap": "^3.11.4",
+    "html-webpack-plugin": "^5.5.0",
+    "lil-gui": "^0.18.0",
+    "three": "^0.149.0"
+  }
+}
