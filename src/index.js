@@ -9,19 +9,25 @@ const scene = new THREE.Scene()
 // cube
 const geometry = new THREE.BoxGeometry(1, 1, 1)
 const material = new THREE.MeshBasicMaterial({ color: "red" })
-const material2 = new THREE.MeshBasicMaterial({ color: "red" })
+const material2 = new THREE.MeshBasicMaterial({ color: "blue" })
 const cube = new THREE.Mesh(geometry, material)
-const cube2 = new THREE.Mesh(geometry, material2)
-cube.scale.set(0.5, 0.5, 0.5)
-cube2.position.x = -1
-cube2.scale.set(0.5, 0.5, 0.5)
-cube2.material.color.setColorName("blue")
-scene.add(cube, cube2)
+scene.add(cube)
+
+const obstacles = () => {
+  for (let i = -5; i < 3; i++) {
+    const obstacle = new THREE.Mesh(geometry, material2)
+    obstacle.position.x = i + i / 0.5
+    obstacle.position.z = -3
+    // add to scene
+    scene.add(obstacle)
+  }
+}
+obstacles()
 
 // camera
 const camera = new THREE.PerspectiveCamera(75, width / height)
 scene.add(camera)
-camera.position.set(0, 1.3, 2.5)
+camera.position.set(0, 1.3, 3.5)
 
 // const renderer
 const canvas = document.querySelector("canvas")
@@ -41,10 +47,10 @@ const loop = () => {
   window.addEventListener("resize", resizeCanvas)
 
   // move cube away from camera
-  cube.position.z -= 0.01
+  cube.position.z -= 0.02
 
   // getting the camera to chase cube
-  camera.position.z -= 0.01
+  camera.position.z -= 0.02
 
   // renders scene
   renderer.render(scene, camera)
