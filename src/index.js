@@ -13,9 +13,33 @@ const cube = new THREE.Mesh(geometry, material)
 
 scene.add(cube)
 const obs = () => {
-  for (let i = -500; i < 590; i++) {
+  for (let i = 0; i < 200; i++) {
     const obsCube = new THREE.Mesh(geometry, material2)
-    obsCube.position.z += (i * Math.floor(Math.random() * 3)) / 2
+    obsCube.position.z -= i * 5
+    obsCube.position.x = -3
+    scene.add(obsCube)
+  }
+  for (let i = 0; i < 200; i++) {
+    const obsCube = new THREE.Mesh(geometry, material2)
+    obsCube.position.z -= i * 5
+    scene.add(obsCube)
+  }
+  for (let i = 0; i < 200; i++) {
+    const obsCube = new THREE.Mesh(geometry, material2)
+    obsCube.position.z -= i * 5
+    obsCube.position.x = 3
+    scene.add(obsCube)
+  }
+  for (let i = 0; i < 200; i++) {
+    const obsCube = new THREE.Mesh(geometry, material2)
+    obsCube.position.z -= i * 5
+    obsCube.position.x = 6
+    scene.add(obsCube)
+  }
+  for (let i = 0; i < 200; i++) {
+    const obsCube = new THREE.Mesh(geometry, material2)
+    obsCube.position.z -= i * 5
+    obsCube.position.x = -6
     scene.add(obsCube)
   }
 }
@@ -44,10 +68,10 @@ const loop = () => {
   window.addEventListener("resize", resizeCanvas)
 
   // move cube away from camera
-  cube.position.z -= 0.02
+  cube.position.z -= 0.05
 
   // getting the camera to chase cube
-  camera.position.z -= 0.02
+  camera.position.z -= 0.05
 
   // renders scene
   renderer.render(scene, camera)
