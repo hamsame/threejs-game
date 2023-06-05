@@ -1,6 +1,5 @@
 import * as THREE from "three"
 import "./styles/style.css"
-
 const [width, height] = [window.innerWidth * 0.9, window.innerHeight * 0.9]
 
 // scene
@@ -11,23 +10,21 @@ const geometry = new THREE.BoxGeometry(1, 1, 1)
 const material = new THREE.MeshBasicMaterial({ color: "red" })
 const material2 = new THREE.MeshBasicMaterial({ color: "blue" })
 const cube = new THREE.Mesh(geometry, material)
-scene.add(cube)
 
-const obstacles = () => {
-  for (let i = -5; i < 3; i++) {
-    const obstacle = new THREE.Mesh(geometry, material2)
-    obstacle.position.x = i + i / 0.5
-    obstacle.position.z = -3
-    // add to scene
-    scene.add(obstacle)
+scene.add(cube)
+const obs = () => {
+  for (let i = -500; i < 590; i++) {
+    const obsCube = new THREE.Mesh(geometry, material2)
+    obsCube.position.z += (i * Math.floor(Math.random() * 3)) / 2
+    scene.add(obsCube)
   }
 }
-obstacles()
+obs()
 
 // camera
 const camera = new THREE.PerspectiveCamera(75, width / height)
 scene.add(camera)
-camera.position.set(0, 1.3, 3.5)
+camera.position.set(0, 2.6, 5)
 
 // const renderer
 const canvas = document.querySelector("canvas")
