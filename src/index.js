@@ -11,48 +11,29 @@ const material = new THREE.MeshBasicMaterial({ color: "red" })
 const material2 = new THREE.MeshBasicMaterial({ color: "blue" })
 const cube = new THREE.Mesh(geometry, material)
 
-// default position = -6 / -3 depending on row
-// if cube is multiple of 2/3 make cube go 2 left / right
-
 scene.add(cube)
-// vals need to be changeable and loop needs to be a func
-const obs = () => {
+const loadObs = (xcoord) => {
   for (let i = 0; i < 200; i++) {
-    let [val1, val2] = [-4, -2]
+    let xPosition = xcoord
+    let [val1, val2] = [xPosition + 1, xPosition - 1]
     const obsCube = new THREE.Mesh(geometry, material2)
     obsCube.position.z -= i * 5
     if (i % 2 === 0) {
-      obsCube.position.x = -3
-    } else if (i % 2 !== 0) {
-      obsCube.position.x = Math.random() <= 0.5 ? val1 : val2
+      obsCube.position.x = xcoord
     } else if (i % 3 == 0) {
+      obsCube.position.x = val1
+    } else if (i % 2 !== 0) {
       obsCube.position.x = val2
     }
     scene.add(obsCube)
   }
-  for (let i = 0; i < 200; i++) {
-    const obsCube = new THREE.Mesh(geometry, material2)
-    obsCube.position.z -= i * 5
-    scene.add(obsCube)
-  }
-  for (let i = 0; i < 200; i++) {
-    const obsCube = new THREE.Mesh(geometry, material2)
-    obsCube.position.z -= i * 5
-    obsCube.position.x = 3
-    scene.add(obsCube)
-  }
-  for (let i = 0; i < 200; i++) {
-    const obsCube = new THREE.Mesh(geometry, material2)
-    obsCube.position.z -= i * 5
-    obsCube.position.x = 6
-    scene.add(obsCube)
-  }
-  for (let i = 0; i < 200; i++) {
-    const obsCube = new THREE.Mesh(geometry, material2)
-    obsCube.position.z -= i * 5
-    obsCube.position.x = -6
-    scene.add(obsCube)
-  }
+}
+const obs = () => {
+  loadObs(-6)
+  loadObs(-3)
+  loadObs(0)
+  loadObs(3)
+  loadObs(6)
 }
 
 obs()
