@@ -12,31 +12,28 @@ const material2 = new THREE.MeshBasicMaterial({ color: "blue" })
 const cube = new THREE.Mesh(geometry, material)
 
 scene.add(cube)
-const loadObs = (xcoord) => {
-  for (let i = 0; i < 200; i++) {
-    let xPosition = xcoord
-    let [val1, val2] = [xPosition + 1, xPosition - 1]
-    const obsCube = new THREE.Mesh(geometry, material2)
-    obsCube.position.z -= i * 5
-    if (i % 2 === 0) {
-      obsCube.position.x = xcoord
-    } else if (i % 3 == 0) {
-      obsCube.position.x = val1
-    } else if (i % 2 !== 0) {
-      obsCube.position.x = val2
+
+const loadObs = () => {
+  const xCoords = [-6, -3, 0, 3, 6]
+  xCoords.forEach((xcoord) => {
+    for (let i = 0; i < 200; i++) {
+      let xPosition = xcoord
+      let [val1, val2] = [xPosition + 1, xPosition - 1]
+      const obsCube = new THREE.Mesh(geometry, material2)
+      obsCube.position.z -= i * 5
+      if (i % 2 === 0) {
+        obsCube.position.x = xcoord
+      } else if (i % 3 == 0) {
+        obsCube.position.x = val1
+      } else if (i % 2 !== 0) {
+        obsCube.position.x = val2
+      }
+      scene.add(obsCube)
     }
-    scene.add(obsCube)
-  }
-}
-const obs = () => {
-  loadObs(-6)
-  loadObs(-3)
-  loadObs(0)
-  loadObs(3)
-  loadObs(6)
+  })
 }
 
-obs()
+loadObs()
 
 // camera
 const camera = new THREE.PerspectiveCamera(75, width / height)
