@@ -8,10 +8,19 @@ const scene = new THREE.Scene()
 // cube
 const geometry = new THREE.BoxGeometry(1, 1, 1)
 const material = new THREE.MeshBasicMaterial({ color: "red" })
-const material2 = new THREE.MeshBasicMaterial({ color: "blue" })
+const material2 = new THREE.MeshBasicMaterial({ color: "green" })
+const material3 = new THREE.MeshBasicMaterial({ color: "blue" })
 const cube = new THREE.Mesh(geometry, material)
 
-scene.add(cube)
+const geometry2 = new THREE.BoxGeometry(3, 2, 10)
+const barrier1 = new THREE.Mesh(geometry2, material2)
+const barrier2 = new THREE.Mesh(geometry2, material2)
+barrier1.position.set(-11, 0, cube.position.z)
+barrier1.scale.z = 100
+barrier2.position.set(11, 0, cube.position.z)
+barrier2.scale.z = 100
+
+scene.add(cube, barrier1, barrier2)
 
 const loadObs = () => {
   const xCoords = [-6, -3, 0, 3, 6]
@@ -19,7 +28,7 @@ const loadObs = () => {
     for (let i = 0; i < 200; i++) {
       let xPosition = xcoord
       let [val1, val2] = [xPosition + 1, xPosition - 1]
-      const obsCube = new THREE.Mesh(geometry, material2)
+      const obsCube = new THREE.Mesh(geometry, material3)
       obsCube.position.z -= i * 5
       if (i % 2 === 0) {
         obsCube.position.x = xcoord
