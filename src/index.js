@@ -12,13 +12,19 @@ const material2 = new THREE.MeshBasicMaterial({ color: "green" })
 const material3 = new THREE.MeshBasicMaterial({ color: "blue" })
 const cube = new THREE.Mesh(geometry, material)
 
+// cube 1 bounding box
+// let cubeBB = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3())
+// cubeBB.setFromObject(cubeBB)
+cube.geometry.computeBoundingBox()
+console.log(cube.geometry.boundingBox)
+
 const geometry2 = new THREE.BoxGeometry(3, 2, 10)
 const barrier1 = new THREE.Mesh(geometry2, material2)
 const barrier2 = new THREE.Mesh(geometry2, material2)
 barrier1.position.set(-11, 0, cube.position.z)
-barrier1.scale.z = 100
+barrier1.scale.z = 200
 barrier2.position.set(11, 0, cube.position.z)
-barrier2.scale.z = 100
+barrier2.scale.z = 200
 
 scene.add(cube, barrier1, barrier2)
 
