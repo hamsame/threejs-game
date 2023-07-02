@@ -12,11 +12,9 @@ const material2 = new THREE.MeshBasicMaterial({ color: "green" })
 const material3 = new THREE.MeshBasicMaterial({ color: "blue" })
 const cube = new THREE.Mesh(geometry, material)
 
-// cube 1 bounding box
-// let cubeBB = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3())
-// cubeBB.setFromObject(cubeBB)
-cube.geometry.computeBoundingBox()
-console.log(cube.geometry.boundingBox)
+// cube bounding box
+let getCubebb = cube.geometry.computeBoundingBox()
+let cubeBB = cube.geometry.boundingBox
 
 const geometry2 = new THREE.BoxGeometry(3, 2, 10)
 const barrier1 = new THREE.Mesh(geometry2, material2)
@@ -72,6 +70,9 @@ renderer.setSize(width, height)
 const loop = () => {
   window.addEventListener("resize", resizeCanvas)
 
+  // update Cube's bounding box
+  cubeBB.copy(cube.geometry.boundingBox).applyMatrix4(cube.matrixWorld)
+  // console.log(cubeBB)
   // move cube away from camera
   cube.position.z -= 0.05
 
@@ -81,6 +82,19 @@ const loop = () => {
   // renders scene
   renderer.render(scene, camera)
 
+  // follow arrow keys
+  document.onkeydown = (e) => {
+    if (e.key === "ArrowLeft") {
+      // on left arrow key
+      cube.position.x -= 1
+      console.log(e)
+    }
+    if (e.key === "ArrowRight") {
+      // on right arrow key
+      cube.position.x += 1
+      console.log(e)
+    }
+  }
   window.requestAnimationFrame(loop)
 }
 
