@@ -11,10 +11,11 @@ const material = new THREE.MeshBasicMaterial({ color: "red" })
 const material2 = new THREE.MeshBasicMaterial({ color: "green" })
 const material3 = new THREE.MeshBasicMaterial({ color: "blue" })
 const cube = new THREE.Mesh(geometry, material)
+cube.scale.set(0.7, 0.7, 0.7)
 
 // cube bounding box
-let getCubebb = cube.geometry.computeBoundingBox()
-let cubeBB = cube.geometry.boundingBox
+// let getCubebb = cube.geometry.computeBoundingBox()
+let cubeBB = new THREE.Box3().setFromObject(cube)
 
 const geometry2 = new THREE.BoxGeometry(3, 2, 10)
 const barrier1 = new THREE.Mesh(geometry2, material2)
@@ -25,6 +26,7 @@ barrier2.position.set(11, 0, cube.position.z)
 barrier2.scale.z = 200
 
 scene.add(cube, barrier1, barrier2)
+let obsBoundingBoxes = []
 
 const loadObs = () => {
   const xCoords = [-6, -3, 0, 3, 6]
@@ -42,11 +44,21 @@ const loadObs = () => {
         obsCube.position.x = val2
       }
       scene.add(obsCube)
+      let obsCubeBB = new THREE.Box3().setFromObject(obsCube)
+      obsBoundingBoxes.push(obsCubeBB)
     }
   })
 }
 
 loadObs()
+const checkForCollisions = () => {
+  obsBoundingBoxes.forEach((boundingBox, index) => {
+    let collision = boundingBox.intersectsBox(cubeBB)
+    if (collision) {
+      console.log("collision")
+    }
+  })
+}
 
 // camera
 const camera = new THREE.PerspectiveCamera(75, width / height)
@@ -85,14 +97,14 @@ const loop = () => {
   document.onkeydown = (e) => {
     if (e.key === "ArrowLeft") {
       // on left arrow key
-      if (cube.position.x > -6) {
+      if (cube.position.x > -7) {
         cube.position.x -= 1
         camera.position.x -= 1
       }
     }
     if (e.key === "ArrowRight") {
       // on right arrow key
-      if (cube.position.x < 6) {
+      if (cube.position.x < 7) {
         cube.position.x += 1
         camera.position.x += 1
       }
@@ -114,6 +126,7 @@ const loop = () => {
       }
     }
   }
+  checkForCollisions()
   window.requestAnimationFrame(loop)
 }
 
