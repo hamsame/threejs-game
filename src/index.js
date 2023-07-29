@@ -1,7 +1,8 @@
 import * as THREE from "three"
 import "./styles/style.css"
-const [width, height] = [window.innerWidth * 0.9, window.innerHeight * 0.9]
-
+import { movements as detectMovementControlEvent } from "./functions"
+const [width, height] = [window.innerWidth * 0.8, window.innerHeight * 0.8]
+let gameOver = false
 // scene
 const scene = new THREE.Scene()
 
@@ -14,9 +15,7 @@ const cube = new THREE.Mesh(geometry, material)
 cube.scale.set(0.7, 0.7, 0.7)
 
 // cube bounding box
-// let getCubebb = cube.geometry.computeBoundingBox()
 let cubeBB = new THREE.Box3().setFromObject(cube)
-
 const geometry2 = new THREE.BoxGeometry(3, 2, 10)
 const barrier1 = new THREE.Mesh(geometry2, material2)
 const barrier2 = new THREE.Mesh(geometry2, material2)
@@ -24,8 +23,8 @@ barrier1.position.set(-11, 0, cube.position.z)
 barrier1.scale.z = 200
 barrier2.position.set(11, 0, cube.position.z)
 barrier2.scale.z = 200
-
 scene.add(cube, barrier1, barrier2)
+
 let obsBoundingBoxes = []
 
 const loadObs = () => {
@@ -51,11 +50,11 @@ const loadObs = () => {
 }
 
 loadObs()
-const checkForCollisions = () => {
+const checkForAnyObjectCollisions = () => {
   obsBoundingBoxes.forEach((boundingBox, index) => {
     let collision = boundingBox.intersectsBox(cubeBB)
     if (collision) {
-      console.log("collision")
+      gameOver = true
     }
   })
 }
@@ -77,57 +76,27 @@ const resizeCanvas = () => {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
   camera.updateProjectionMatrix()
 }
-
 renderer.setSize(width, height)
+
 const loop = () => {
   window.addEventListener("resize", resizeCanvas)
-
   // update Cube's bounding box
   cubeBB.copy(cube.geometry.boundingBox).applyMatrix4(cube.matrixWorld)
   // move cube away from camera
   cube.position.z -= 0.05
-
   // getting the camera to chase cube
   camera.position.z -= 0.05
 
   // renders scene
   renderer.render(scene, camera)
+  detectMovementControlEvent(cube, camera)
 
-  // follow user controls
-  document.onkeydown = (e) => {
-    if (e.key === "ArrowLeft") {
-      // on left arrow key
-      if (cube.position.x > -7) {
-        cube.position.x -= 1
-        camera.position.x -= 1
-      }
-    }
-    if (e.key === "ArrowRight") {
-      // on right arrow key
-      if (cube.position.x < 7) {
-        cube.position.x += 1
-        camera.position.x += 1
-      }
-    }
+  setTimeout(() => {
+    checkForAnyObjectCollisions()
+  }, 1000)
+  if (!gameOver) {
+    window.requestAnimationFrame(loop)
   }
-  document.onmousedown = (e) => {
-    let midPoint = window.innerWidth / 2
-    if (e.clientX < midPoint) {
-      if (cube.position.x > -6) {
-        // on left side click
-        cube.position.x -= 1
-        camera.position.x -= 1
-      }
-    } else if (e.clientX >= midPoint) {
-      if (cube.position.x < 6) {
-        // on right side click
-        cube.position.x += 1
-        camera.position.x += 1
-      }
-    }
-  }
-  checkForCollisions()
-  window.requestAnimationFrame(loop)
 }
 
 loop()
